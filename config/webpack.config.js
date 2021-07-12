@@ -6,21 +6,23 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "../dist"),
   },
-  plugins: [new HtmlWebpackPlugin()],
+  plugins: [new HtmlWebpackPlugin({ template: "./src/index.html" })],
   module: {
     rules: [
       {
-        test: /\.(ts|tsx)$/i,
-        loader: "ts-loader",
+        test: /\.(js|jsx|ts|tsx)$/i,
+        loader: "babel-loader",
         exclude: ["/node_modules/"],
       },
       {
         test: /\.less$/i,
         use: ["style-loader", "css-loader", "postcss-loader", "less-loader"],
+        exclude: ["/node_modules/"],
       },
       {
         test: /\.css$/i,
         use: ["style-loader", "css-loader", "postcss-loader"],
+        exclude: ["/node_modules/"],
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
@@ -29,6 +31,6 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".tsx", ".ts", ".js", "jsx"],
   },
 };
