@@ -9,7 +9,7 @@
     "build:dev": "webpack --config ./config/webpack.dev.js",
     "build:prod": "webpack --config ./config/webpack.dev.js",
     "watch": "webpack --watch",
-    "serve": "webpack serve"
+    "start": "webpack serve --config ./config/webpack.dev.js"
   },
   "repository": {
     "type": "git",
@@ -49,6 +49,7 @@
     "workbox-webpack-plugin": "^6.1.5"
   },
   "dependencies": {
+    "antd": "^4.16.7",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   }
