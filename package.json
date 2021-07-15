@@ -8,7 +8,7 @@
     "build": "webpack --config ./config/webpack.prod.js",
     "build:dev": "webpack --config ./config/webpack.dev.js",
     "start": "webpack serve --config ./config/webpack.dev.js",
-    "analyze":"webpack --profile --json > stats.json --config ./config/webpack.prod.js"
+    "analyze": "webpack --profile --json > stats.json --config ./config/webpack.prod.js && webpack-bundle-analyzer stats.json"
   },
   "repository": {
     "type": "git",
