@@ -9,6 +9,7 @@
     "build:dev": "webpack --config ./config/webpack.dev.js",
     "start": "webpack serve --config ./config/webpack.dev.js",
     "analyze": "webpack --profile --json > stats.json --config ./config/webpack.prod.js && webpack-bundle-analyzer stats.json",
+    "lint-staged:js": "eslint --ext .js,.jsx,.ts,.tsx ",
     "prepare": "husky install"
   },
   "repository": {
@@ -64,6 +65,8 @@
     }
   },
   "lint-staged": {
+    "**/*.less": "stylelint --syntax less",
+    "**/*.{js,jsx,ts,tsx}": "npm run lint-staged:js",
     "**/*.{js,jsx,tsx,ts,less,md,json}": [
       "prettier --write"
     ]
