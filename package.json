@@ -28,7 +28,9 @@
     "@babel/preset-env": "^7.14.7",
     "@babel/preset-react": "^7.14.5",
     "@babel/preset-typescript": "^7.14.5",
+    "@types/lodash": "^4.14.171",
     "@types/react": "^17.0.14",
+    "@types/react-copy-to-clipboard": "^5.0.1",
     "@types/react-dom": "^17.0.9",
     "@umijs/fabric": "^2.6.2",
     "@webpack-cli/generators": "^2.2.0",
@@ -56,8 +58,11 @@
   },
   "dependencies": {
     "antd": "^4.16.7",
+    "clipboard": "^2.0.8",
+    "lodash": "^4.17.21",
     "protobufjs": "^6.11.2",
     "react": "^17.0.2",
+    "react-copy-to-clipboard": "^5.0.3",
     "react-dom": "^17.0.2"
   },
   "husky": {
