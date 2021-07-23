@@ -44,3 +44,18 @@ export function printMethod(name: string, methodContent: IService) {
 
   return `${strs.join('')}`;
 }
+
+export function getMethod(name: string, methodContent: IService) {
+  const content = methodContent.methods;
+  const item = readMethod(name, content);
+
+  const strs = item.params.map((param) => {
+    const commentRegular = /(POST|GET)(.*)-->(.*)/;
+    // eslint-disable-next-line no-sparse-arrays
+    const [, method, url, notes] = commentRegular.exec(param.comment!) || [, 'GET', '', ''];
+
+    return { notes, methodName: param.name, method, url: url?.trim() };
+  });
+
+  return strs;
+}

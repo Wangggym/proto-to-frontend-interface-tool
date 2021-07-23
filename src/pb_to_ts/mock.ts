@@ -1,4 +1,6 @@
 import protobuf, { Service, MapField, Enum } from 'protobufjs';
+import { getDateByName } from './getDateByName';
+import primitives from './primitives';
 
 // eslint-disable-next-line no-underscore-dangle
 function _getAllMethods(root: protobuf.Root) {
@@ -20,44 +22,13 @@ export function getAllMethods(source: string) {
   return _getAllMethods(res.root);
 }
 
-function mockScalar(type: string): any {
-  switch (type) {
-    case 'string':
-      return 'Hello';
-    case 'number':
-      return 10;
-    case 'bool':
-      return true;
-    case 'int32':
-      return 10;
-    case 'int64':
-      return '20';
-    case 'uint32':
-      return 100;
-    case 'uint64':
-      return '100';
-    case 'sint32':
-      return 100;
-    case 'sint64':
-      return '-1200';
-    case 'fixed32':
-      return 1400;
-    case 'fixed64':
-      return '1500';
-    case 'sfixed32':
-      return 1600;
-    case 'sfixed64':
-      return '-1700';
-    case 'double':
-      return 1.4;
-    case 'float':
-      return 1.1;
-    case 'bytes':
-      // eslint-disable-next-line no-buffer-constructor
-      return new Buffer('Hello');
-    default:
-      return null;
-  }
+const typeReg =
+  /string|number|bool|int32|int64|uint32|uint64|sint32|sint64|fixed32|fixed64|sfixed32|sfixed64|double|float|bytes/;
+
+function mockScalar(type: string, name: string): any {
+  if (/bool/.test(type)) return primitives.boolean;
+  if (!typeReg.test(type)) return null;
+  return primitives[`string_${getDateByName(name)}`];
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
@@ -73,19 +44,19 @@ function mockType(root: protobuf.Root, typeName: string): Object {
     type.fieldsArray &&
     type.fieldsArray.reduce((a, b) => {
       if (b instanceof MapField) {
-        const mockKey = mockScalar(b.keyType);
-        const mockData = mockScalar(b.type);
+        const mockKey = mockScalar(b.keyType, b.name);
+        const mockData = mockScalar(b.type, b.name);
         const val = mockData
           ? { [b.name]: { [mockKey]: mockData } }
           : { [b.name]: { [mockKey]: mockType(root, b.type) } };
         return { ...a, ...val };
       }
       if (b.rule === 'repeated') {
-        const mockData = mockScalar(b.type);
+        const mockData = mockScalar(b.type, b.name);
         const val = mockData ? { [b.name]: [mockData] } : { [b.name]: [mockType(root, b.type)] };
         return { ...a, ...val };
       }
-      const mockData = mockScalar(b.type);
+      const mockData = mockScalar(b.type, b.name);
       const val = mockData ? { [b.name]: mockData } : { [b.name]: mockType(root, b.type) };
       return { ...a, ...val };
     }, {});

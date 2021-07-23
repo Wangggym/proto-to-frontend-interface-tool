@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Input, message, Tabs } from 'antd';
-import { parseProto } from '../pb_to_ts';
+import { parseProto, mockResponse } from '../pb_to_ts';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import styles from './index.less';
+import { flatMapDeep, map } from 'lodash';
 
 const defaultFile = `
 syntax = "proto3";
@@ -26,9 +27,17 @@ message MyResponse {
 const { TabPane } = Tabs;
 const { TextArea } = Input;
 
+type MethodsAttr = {
+  method: 'GET' | 'POST';
+  methodName: string;
+  notes: string;
+  url: string;
+}[];
+
 const App: React.FC = () => {
   const [methods, setMethods] = useState<string>();
   const [types, setTypes] = useState<string>();
+  const [mockData, setMockData] = useState<string>();
   const [inputValue, setInputValue] = useState<string>(defaultFile);
 
   const handleChange = (v: string) => {
@@ -38,10 +47,18 @@ const App: React.FC = () => {
   useEffect(() => {
     if (inputValue) {
       try {
-        const { allMethods, allTypes } = parseProto(inputValue);
+        const { allMethods, allTypes, allMethodsAttr } = parseProto(inputValue);
         setMethods(allMethods);
         setTypes(allTypes);
+        const methdsAttr: MethodsAttr = flatMapDeep(allMethodsAttr);
+        const mData = map(methdsAttr, ({ method, methodName, notes, url }) => {
+          const ts = mockResponse(`syntax = "proto3";${inputValue}`, methodName);
+          const aa = JSON.stringify(ts, null, 4);
+          return ` /* ${notes} */\n '${method} ${url}': (req: Request, res: Response) => {\n res.json(mock(${aa}));\n},\n`;
+        }).join('');
+        setMockData(mData);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.log(error);
         message.warn(`格式不正确`);
       }
@@ -86,7 +103,13 @@ const App: React.FC = () => {
             <div>
               <div className={styles.item}>
                 <label>Mock</label>
-                <TextArea />
+                <CopyToClipboard
+                  text={mockData!}
+                  onCopy={() => message.success('copy successfully')}
+                >
+                  <button>copy to clipboard</button>
+                </CopyToClipboard>
+                <TextArea value={mockData} />
               </div>
             </div>
           </div>

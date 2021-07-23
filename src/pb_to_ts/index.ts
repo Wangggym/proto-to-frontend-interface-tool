@@ -1,7 +1,7 @@
 import type { IService, IType, IEnum, Root } from 'protobufjs';
 import protobuf from 'protobufjs';
 import { printField } from './printField';
-import { printMethod } from './printMethod';
+import { getMethod, printMethod } from './printMethod';
 import { printEnum } from './printEnum';
 import { getAllMethods, mockResponse } from './mock';
 import type { OptionType } from './interface';
@@ -14,7 +14,7 @@ const defaultOptions: OptionType = {
 function printTS(j: protobuf.INamespace, opt: OptionType) {
   const allMethods: (string | undefined)[] = [];
   const allTypes: (string | undefined)[] = [];
-
+  const allMethodsAttr: any[] = [];
   function dfsProtobuf(json: protobuf.INamespace, options: OptionType) {
     const { nested } = json;
     if (nested) {
@@ -23,6 +23,7 @@ function printTS(j: protobuf.INamespace, opt: OptionType) {
         Object.keys(value).forEach((category) => {
           if (category === 'methods') {
             allMethods.push(printMethod(name, value as IService));
+            allMethodsAttr.push(getMethod(name, value as IService));
           }
           if (category === 'fields') {
             allTypes.push(printField(name, value as IType, options));
@@ -41,6 +42,7 @@ function printTS(j: protobuf.INamespace, opt: OptionType) {
   return {
     allMethods: createInfo + allMethods.reduce((a, b) => a.concat(b), []).join(''),
     allTypes: createInfo + allTypes.reduce((a, b) => a.concat(b), []).join(''),
+    allMethodsAttr,
   };
 }
 
