@@ -1,7 +1,7 @@
 {
-  "name": "my-webpack-project",
+  "name": "proto-to-frontend-interface-tool",
   "version": "1.0.0",
-  "description": "My webpack project",
+  "description": "PB Converter",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -58,7 +58,6 @@
   },
   "dependencies": {
     "antd": "^4.16.7",
-    "clipboard": "^2.0.8",
     "lodash": "^4.17.21",
     "protobufjs": "^6.11.2",
     "react": "^17.0.2",
