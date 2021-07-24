@@ -28,10 +28,10 @@ const { TabPane } = Tabs;
 const { TextArea } = Input;
 
 type MethodsAttr = {
-  method: 'GET' | 'POST';
-  methodName: string;
-  notes: string;
-  url: string;
+  method?: 'GET' | 'POST';
+  methodName?: string;
+  notes?: string;
+  url?: string;
 }[];
 
 const App: React.FC = () => {
@@ -52,9 +52,9 @@ const App: React.FC = () => {
         setTypes(allTypes);
         const methdsAttr: MethodsAttr = flatMapDeep(allMethodsAttr);
         const mData = map(methdsAttr, ({ method, methodName, notes, url }) => {
-          const ts = mockResponse(`syntax = "proto3";${inputValue}`, methodName);
+          const ts = mockResponse(`syntax = "proto3";${inputValue}`, methodName!);
           const aa = JSON.stringify(ts, null, 4);
-          return ` /* ${notes} */\n '${method} ${url}': (req: Request, res: Response) => {\n res.json(mock(${aa}));\n},\n`;
+          return ` /* ${notes?.trim()} */\n '${method} ${url}': (req: Request, res: Response) => {\n res.json(mock(${aa}));\n},\n`;
         }).join('');
         setMockData(mData);
       } catch (error) {
