@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "yarn rmdist && webpack --config ./config/webpack.prod.js",
-    "build:dev": "webpack --config ./config/webpack.dev.js",
+    "build:dev": "yarn rmdist && webpack --config ./config/webpack.dev.js",
     "start": "webpack serve --config ./config/webpack.dev.js",
     "analyze": "webpack --profile --json > stats.json --config ./config/webpack.prod.js && webpack-bundle-analyzer stats.json",
     "lint-staged:js": "eslint --ext .js,.jsx,.ts,.tsx ",

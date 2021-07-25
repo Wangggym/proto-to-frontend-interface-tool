@@ -1,5 +1,4 @@
 const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
@@ -8,7 +7,6 @@ module.exports = {
     path: path.resolve(__dirname, '../dist'),
   },
   plugins: [
-    new HtmlWebpackPlugin({ template: './src/index.html' }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // all options are optional
@@ -62,5 +60,9 @@ module.exports = {
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js', 'jsx'],
+  },
+  externals: {
+    react: 'React',
+    'react-dom': 'ReactDOM',
   },
 };

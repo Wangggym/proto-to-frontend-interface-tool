@@ -2,9 +2,11 @@ const { merge } = require('webpack-merge');
 const common = require('./webpack.config');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = merge(common, {
   mode: 'production',
+  plugins: [new HtmlWebpackPlugin({ template: './src/assets/index.html' })],
   optimization: {
     minimize: true,
     minimizer: [
