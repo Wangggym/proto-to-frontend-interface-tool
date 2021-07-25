@@ -1,50 +1,66 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  entry: "./src/index",
+  entry: './src/index',
   output: {
-    path: path.resolve(__dirname, "../dist"),
+    path: path.resolve(__dirname, '../dist'),
   },
   plugins: [
-    new HtmlWebpackPlugin({ template: "./src/index.html" }),
+    new HtmlWebpackPlugin({ template: './src/index.html' }),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // all options are optional
+      filename: '[name].css',
+      chunkFilename: '[id].css',
+      ignoreOrder: false, // Enable to remove warnings about conflicting order
+    }),
   ],
   module: {
     rules: [
       {
         test: /\.(js|jsx|ts|tsx)$/i,
-        loader: "babel-loader",
-        exclude: ["/node_modules/"],
+        loader: 'babel-loader',
+        exclude: ['/node_modules/'],
       },
       {
         test: /\.less$/i,
         use: [
-          "style-loader",
           {
-            loader: "css-loader",
+            loader: MiniCssExtractPlugin.loader,
+          },
+          {
+            loader: 'css-loader',
             options: {
               modules: {
-                localIdentName: "[path][name]__[local]--[hash:base64:5]",
+                localIdentName: '[path][name]__[local]--[hash:base64:5]',
               },
             },
           },
-          "postcss-loader",
-          "less-loader",
+          'postcss-loader',
+          'less-loader',
         ],
-        exclude: ["/node_modules/"],
+        exclude: ['/node_modules/'],
       },
       {
         test: /\.css$/i,
-        use: ["style-loader", "css-loader", "postcss-loader"],
-        exclude: ["/node_modules/"],
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
+          'css-loader',
+          'postcss-loader',
+        ],
+        exclude: ['/node_modules/'],
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
-        type: "asset",
+        type: 'asset',
       },
     ],
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js", "jsx"],
+    extensions: ['.tsx', '.ts', '.js', 'jsx'],
   },
 };

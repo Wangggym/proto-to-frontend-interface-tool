@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config ./config/webpack.prod.js",
+    "build": "yarn rmdist && webpack --config ./config/webpack.prod.js",
     "build:dev": "webpack --config ./config/webpack.dev.js",
     "start": "webpack serve --config ./config/webpack.dev.js",
     "analyze": "webpack --profile --json > stats.json --config ./config/webpack.prod.js && webpack-bundle-analyzer stats.json",
     "lint-staged:js": "eslint --ext .js,.jsx,.ts,.tsx ",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "rmdist": "rm -rf ./dist"
   },
   "repository": {
     "type": "git",
@@ -39,6 +40,7 @@
     "babel-loader": "^8.2.2",
     "babel-plugin-import": "^1.13.3",
     "css-loader": "^5.2.6",
+    "css-minimizer-webpack-plugin": "^3.0.2",
     "html-webpack-plugin": "^5.3.2",
     "husky": ">=6",
     "less": "^4.1.1",
@@ -49,6 +51,7 @@
     "postcss-loader": "^6.1.1",
     "prettier": "^2.3.2",
     "style-loader": "^3.0.0",
+    "terser-webpack-plugin": "^5.1.4",
     "typescript": "^4.3.5",
     "webpack": "^5.44.0",
     "webpack-bundle-analyzer": "^4.4.2",
