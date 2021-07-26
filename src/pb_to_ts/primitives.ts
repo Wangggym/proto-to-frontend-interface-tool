@@ -6,7 +6,7 @@ export default {
   string_url: '@url',
   string_uuid: '@guid',
   string_id: '@increment',
-  string_status: '@status',
+  string_status: '@integer(0, 3)',
   string_authority: '@authority',
   string_label: '@label',
   string_group: '@group',

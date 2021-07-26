@@ -1,11 +1,11 @@
-export const getDateByName = (name: string) => {
+export const getDateByName = (name: string, type: 'string' | 'number' | 'boolean') => {
   if (!name || name.length < 1) {
     return 'string';
   }
   if (/id|code|key/.test(name)) {
     return 'uuid';
   }
-  if (/date/.test(name)) {
+  if (/date|_at/.test(name)) {
     return 'date-time';
   }
   if (/email/.test(name)) {
@@ -29,42 +29,10 @@ export const getDateByName = (name: string) => {
   if (/nickname|name|owner|firstName|lastName|username/.test(name)) {
     return 'name';
   }
-  if (['avatar'].includes(name)) {
-    return 'avatar';
+  if (/status/.test(name) && type === 'number') {
+    return 'status';
   }
-  if (['group'].includes(name)) {
-    return 'group';
-  }
-
-  if (['province'].includes(name)) {
-    return 'province';
-  }
-  if (['city'].includes(name)) {
-    return 'city';
-  }
-  if (['addr', 'address'].includes(name)) {
-    return 'county';
-  }
-  if (['country'].includes(name)) {
-    return 'country';
-  }
-  if (
-    ['url', 'imageUrl', 'href'].includes(name) ||
-    name.toLocaleLowerCase().endsWith('url') ||
-    name.toLocaleLowerCase().endsWith('urls') ||
-    name.toLocaleLowerCase().endsWith('image') ||
-    name.toLocaleLowerCase().endsWith('link')
-  ) {
-    return 'href';
-  }
-  if (name.toLocaleLowerCase().endsWith('errorcode')) {
-    return 'errorCode';
-  }
-  if (
-    ['type', 'status'].includes(name) ||
-    name.toLocaleLowerCase().endsWith('status') ||
-    name.toLocaleLowerCase().endsWith('type')
-  ) {
+  if (type === 'number') {
     return 'status';
   }
   if (name.toLocaleLowerCase().endsWith('authority')) {

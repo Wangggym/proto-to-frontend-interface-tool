@@ -1,6 +1,7 @@
 import protobuf, { Service, MapField, Enum } from 'protobufjs';
 import { getDateByName } from './getDateByName';
 import primitives from './primitives';
+import { TYPES } from './types';
 
 // eslint-disable-next-line no-underscore-dangle
 function _getAllMethods(root: protobuf.Root) {
@@ -28,7 +29,7 @@ const typeReg =
 function mockScalar(type: string, name: string): any {
   if (/bool/.test(type)) return primitives.boolean;
   if (!typeReg.test(type)) return null;
-  return primitives[`string_${getDateByName(name)}`];
+  return primitives[`string_${getDateByName(name, TYPES[type])}`];
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types

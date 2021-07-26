@@ -1,27 +1,10 @@
 import type { IType, IField, IMapField } from 'protobufjs';
 import type { OptionType } from './interface';
+import { TYPES } from './types';
 
 interface IFieldWithComment extends IField {
   comment?: string;
 }
-
-const TYPES: Record<string, string> = {
-  double: 'number',
-  float: 'number',
-  int32: 'number',
-  int64: 'number',
-  uint32: 'number',
-  uint64: 'string',
-  sint32: 'number',
-  sint64: 'string',
-  fixed32: 'number',
-  fixed64: 'string',
-  sfixed32: 'number',
-  sfixed64: 'string',
-  bool: 'boolean',
-  string: 'string',
-  bytes: 'string',
-};
 
 function getKeyType(p: Partial<IMapField>) {
   if (p.keyType) {
