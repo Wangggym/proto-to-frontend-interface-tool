@@ -54,7 +54,10 @@ function mockType(root: protobuf.Root, typeName: string): Object {
       }
       if (b.rule === 'repeated') {
         const mockData = mockScalar(b.type, b.name);
-        const val = mockData ? { [b.name]: [mockData] } : { [b.name]: [mockType(root, b.type)] };
+        const repeatedKey = `${b.name}|10-20`;
+        const val = mockData
+          ? { [repeatedKey]: [mockData] }
+          : { [repeatedKey]: [mockType(root, b.type)] };
         return { ...a, ...val };
       }
       const mockData = mockScalar(b.type, b.name);

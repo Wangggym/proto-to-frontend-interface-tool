@@ -56,7 +56,13 @@ const App: React.FC = () => {
           const aa = JSON.stringify(ts, null, 4);
           return ` /* ${notes?.trim()} */\n '${method} ${url}': (req: Request, res: Response) => {\n res.json(mock(${aa}));\n},\n`;
         }).join('');
-        setMockData(mData);
+        setMockData(
+          `/* Create Time: ${new Date().toLocaleDateString()} */
+import { Request, Response } from 'express';
+import { mock } from 'mockjs';
+export default {
+${mData}};`,
+        );
       } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error);
