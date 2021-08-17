@@ -5,6 +5,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 module.exports = {
   entry: './src/index',
   output: {
+    filename: '[name].[contenthash:8].bundle.js',
     path: path.resolve(__dirname, '../dist'),
   },
   plugins: [
@@ -12,8 +13,8 @@ module.exports = {
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // all options are optional
-      filename: '[name].css',
-      chunkFilename: '[id].css',
+      filename: '[name].[contenthash:8].bundle.css',
+      chunkFilename: '[id].[contenthash:8].chunk.css',
       ignoreOrder: false, // Enable to remove warnings about conflicting order
     }),
   ],

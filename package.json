@@ -18,7 +18,7 @@
     "url": "git+https://github.com/wangym0203/proto-to-frontend-interface-tool.git"
   },
   "author": "wangym",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/wangym0203/proto-to-frontend-interface-tool/issues"
   },
