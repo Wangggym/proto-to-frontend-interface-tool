@@ -11,6 +11,7 @@ function getKeyType(p: Partial<IMapField>) {
     return TYPES[p.keyType] || p.keyType;
   }
   return '';
+  
 }
 
 function readField(name: string, content: Record<string, IFieldWithComment>) {
