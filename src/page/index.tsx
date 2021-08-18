@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Input, message, Tabs } from 'antd';
+import React, { useState, useEffect, useMemo } from 'react';
+import { Checkbox, Input, message, Tabs } from 'antd';
 import { parseProto, mockResponse } from '../pb_to_ts';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import styles from './index.less';
@@ -24,6 +24,12 @@ message MyResponse {
 }
   `;
 
+const methodsDependence = (methods: string, disabledDependence: boolean) =>
+  disabledDependence ? methods : `import request from '@/utils/request';\n\n${methods}`;
+
+const typesDependence = (types: string, disabledDependence: boolean) =>
+  disabledDependence ? types : `declare namespace API {\n${types}\n}`;
+
 const { TabPane } = Tabs;
 const { TextArea } = Input;
 
@@ -39,9 +45,14 @@ const App: React.FC = () => {
   const [types, setTypes] = useState<string>();
   const [mockData, setMockData] = useState<string>();
   const [inputValue, setInputValue] = useState<string>(defaultFile);
+  const [disabledDependence, setDisabledDependence] = useState<boolean>(false);
 
   const handleChange = (v: string) => {
     setInputValue(v);
+  };
+
+  const handleChangeDisabledDependence = (v: boolean) => {
+    setDisabledDependence(v);
   };
 
   useEffect(() => {
@@ -71,10 +82,22 @@ ${mData}};`,
     }
   }, [inputValue]);
 
+  const { cacheTypes, cacheMethdos } = useMemo(() => {
+    return {
+      cacheMethdos: methodsDependence(methods!, disabledDependence),
+      cacheTypes: typesDependence(types!, disabledDependence),
+    };
+  }, [methods, types, disabledDependence]);
+
   return (
     <div className={styles.warpper}>
       <Tabs size="large">
         <TabPane tab="PB Converter" key="1">
+          <div>
+            <Checkbox onChange={(e) => handleChangeDisabledDependence(e.target.checked)}>
+              disabledDependence
+            </Checkbox>
+          </div>
           <div className={styles.content}>
             <div>
               <div className={styles.item}>
@@ -91,19 +114,22 @@ ${mData}};`,
               <div className={styles.item}>
                 <label>Request</label>
                 <CopyToClipboard
-                  text={methods!}
+                  text={cacheMethdos!}
                   onCopy={() => message.success('copy successfully')}
                 >
                   <button>copy to clipboard</button>
                 </CopyToClipboard>
-                <TextArea value={methods} />
+                <TextArea value={cacheMethdos} />
               </div>
               <div className={styles.item}>
                 <label>Interface</label>
-                <CopyToClipboard text={types!} onCopy={() => message.success('copy successfully')}>
+                <CopyToClipboard
+                  text={cacheTypes!}
+                  onCopy={() => message.success('copy successfully')}
+                >
                   <button>copy to clipboard</button>
                 </CopyToClipboard>
-                <TextArea value={types} />
+                <TextArea value={cacheTypes} />
               </div>
             </div>
             <div>
