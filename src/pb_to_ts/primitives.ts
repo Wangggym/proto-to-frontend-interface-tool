@@ -11,6 +11,7 @@ export default {
   string_label: '@label',
   string_group: '@group',
   string_csentence: '@csentence',
+  string_word: '@word',
   string_cname: '@cname',
   string_name: '@last',
   string_errorCode: '@increment',

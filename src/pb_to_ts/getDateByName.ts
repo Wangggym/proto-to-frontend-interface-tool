@@ -43,5 +43,5 @@ export const getDateByName = (name: string, type: 'string' | 'number' | 'boolean
   if (name.toLocaleLowerCase().endsWith('authority')) {
     return 'authority';
   }
-  return 'csentence';
+  return 'word';
 };
