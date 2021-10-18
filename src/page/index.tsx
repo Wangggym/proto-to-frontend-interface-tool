@@ -25,7 +25,7 @@ message MyResponse {
   `;
 
 const methodsDependence = (methods: string, disabledDependence: boolean) =>
-  disabledDependence ? methods : `import request from '@/utils/request';\n\n${methods}`;
+  disabledDependence ? methods : `import request from '../utils/request';\n\n${methods}`;
 
 const typesDependence = (types: string, disabledDependence: boolean) =>
   disabledDependence ? types : `declare namespace API {\n${types}\n}`;
@@ -62,16 +62,15 @@ const App: React.FC = () => {
         setMethods(allMethods);
         setTypes(allTypes);
         const methdsAttr: MethodsAttr = flatMapDeep(allMethodsAttr);
+        console.log(methdsAttr);
         const mData = map(methdsAttr, ({ method, methodName, notes, url }) => {
           const ts = mockResponse(`syntax = "proto3";${inputValue}`, methodName!);
           const aa = JSON.stringify(ts, null, 4);
-          return ` /* ${notes?.trim()} */\n '${method} ${url}': (req: Request, res: Response) => {\n res.json(mock(${aa}));\n},\n`;
+          return ` /* ${notes?.trim()} */\n '${method} ${url}': ${aa},\n`;
         }).join('');
         setMockData(
           `/* Create Time: ${new Date().toLocaleDateString()} */
-import { Request, Response } from 'express';
-import { mock } from 'mockjs';
-export default {
+module.exports = {
 ${mData}};`,
         );
       } catch (error) {
